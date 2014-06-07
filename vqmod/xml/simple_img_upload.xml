@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Simple Img Upload by MALOK</id>
+	<version>1.0.0</version>
+	<vqmver>2.1.5</vqmver>
+	<author>BeppeX</author>
+
+	<file name="admin/view/template/catalog/product_form.tpl">
+        <operation>
+            <search position="replace" index="1"><![CDATA[<td><div class="image"><img src="<?php echo $thumb; ?>" alt="" id="thumb" /><br />]]></search>
+			<add><![CDATA[<td><div class="image" style="width: 241px;"><div <?php echo isset($this->request->get['product_id'])?"id=\"simple-image-upload\"":"";?>><img src="<?php echo $thumb; ?>" alt="" id="thumb"/></div><input type="hidden" id="product_id" value="<?php echo isset($this->request->get['product_id'])?$this->request->get['product_id']:"";?>">]]></add>
+        </operation>
+
+        <operation>
+            <search position="replace" index="1"><![CDATA[<td class="left"><div class="image"><img src="<?php echo $product_image['thumb']; ?>" alt="" id="thumb<?php echo $image_row; ?>" />]]></search>
+			<add><![CDATA[<td class="left"><div class="image"><div class="simple-image-upload" id="simple-image-upload-<?php echo $image_row;?>" data-image="<?php echo $image_row;?>"><img src="<?php echo $product_image['thumb']; ?>" alt="" id="thumb<?php echo $image_row; ?>" /></div>]]></add>
+        </operation>
+
+        <operation>
+            <search position="replace" index="1"><![CDATA[	html += '    <td class="left"><div class="image"><img src="<?php echo $no_image; ?>" alt="" id="thumb' + image_row + '" /><input type="hidden" name="product_image[' + image_row + '][image]" value="" id="image' + image_row + '" /><br /><a onclick="image_upload(\'image' + image_row + '\', \'thumb' + image_row + '\');"><?php echo $text_browse; ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick="$(\'#thumb' + image_row + '\').attr(\'src\', \'<?php echo $no_image; ?>\'); $(\'#image' + image_row + '\').attr(\'value\', \'\');"><?php echo $text_clear; ?></a></div></td>';]]></search>
+			<add><![CDATA[	html += '    <td class="left"><div class="image"><div class="simple-image-upload" id="simple-image-upload-'+ image_row +'" data-image="'+ image_row +'"><img src="<?php echo $no_image; ?>" alt="" id="thumb' + image_row + '" /><input type="hidden" name="product_image[' + image_row + '][image]" value="" id="image' + image_row + '" /><br /><a onclick="image_upload(\'image' + image_row + '\', \'thumb' + image_row + '\');"><?php echo $text_browse; ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick="$(\'#thumb' + image_row + '\').attr(\'src\', \'<?php echo $no_image; ?>\'); $(\'#image' + image_row + '\').attr(\'value\', \'\');"><?php echo $text_clear; ?></a></div></td>';]]></add>
+        </operation>
+		
+		<operation>
+			<search position="before" index="1"><![CDATA[<script type="text/javascript"><!--]]></search>
+			<add><![CDATA[
+			<script type="text/javascript" src="view/javascript/jquery/ajaxupload.js"></script>
+			<script type="text/javascript">var token = '<?php echo $token; ?>';</script>
+			<script type="text/javascript" src="view/javascript/simpleimgupload.js"></script>			
+			]]></add>
+        </operation>
+
+		<operation>
+			<search position="after" index="1"><![CDATA[$('#images tfoot').before(html);]]></search>
+			<add><![CDATA[addEventSimpleImageUpload("simple-image-upload-"+image_row,image_row);]]></add>
+        </operation>
+		
+	</file>
+</modification>
